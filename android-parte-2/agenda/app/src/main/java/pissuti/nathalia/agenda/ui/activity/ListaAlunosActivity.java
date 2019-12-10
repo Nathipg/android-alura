@@ -66,6 +66,14 @@ public class ListaAlunosActivity extends AppCompatActivity {
         final List<Aluno> alunos = dao.todos();
         configuraAdapter(listaDeAlunos, alunos);
         configuraListenerClickPorItem(listaDeAlunos);
+        listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno aluno = (Aluno) parent.getItemAtPosition(position);
+                dao.remover(aluno);
+                return true;
+            }
+        });
     }
 
     private void configuraListenerClickPorItem(ListView listaDeAlunos) {

@@ -21,13 +21,29 @@ public class AlunoDAO {
     }
 
     public void edita(Aluno aluno) {
+        Aluno alunoSelecionado = buscaAlunoPorId(aluno);
+
+        if(alunoSelecionado != null) {
+            int posicao = alunos.indexOf(alunoSelecionado);
+            alunos.set(posicao, aluno);
+        }
+    }
+
+    public void remover(Aluno aluno) {
+        Aluno alunoRemover = buscaAlunoPorId(aluno);
+        if(alunoRemover != null) {
+            alunos.remove(alunoRemover);
+        }
+    }
+
+    public Aluno buscaAlunoPorId(Aluno aluno) {
         for(Aluno a : alunos) {
             if(a.getId() == aluno.getId()) {
-                int posicao = alunos.indexOf(a);
-                alunos.set(posicao, aluno);
-                break;
+                return a;
             }
         }
+
+        return null;
     }
 
     public List<Aluno> todos() {
