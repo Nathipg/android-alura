@@ -6,6 +6,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -14,17 +15,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
+
 import pissuti.nathalia.agenda.R;
 import pissuti.nathalia.agenda.dao.AlunoDAO;
 import pissuti.nathalia.agenda.model.Aluno;
-import pissuti.nathalia.agenda.ui.adapter.ListaAlunosAdapter;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Lista de alunos";
     public static final String CHAVE_ALUNO = "aluno";
     private final AlunoDAO dao = new AlunoDAO();
-    private ListaAlunosAdapter adapter;
+    private ArrayAdapter<Aluno> adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         configuraFabNovoAluno();
         configuraLista();
         for (int i = 0; i < 5; i++) {
-            dao.salvar(new Aluno("Aluno " + i, "19994836773", "email@gmail.com"));
+            dao.salvar(new Aluno("Aluno " + i, "99999999", "email@gmail.com"));
         }
     }
 
@@ -111,7 +113,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     }
 
     private void configuraAdapter(ListView listaDeAlunos) {
-        adapter = new ListaAlunosAdapter(this);
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1);
         listaDeAlunos.setAdapter(adapter);
     }
 }
