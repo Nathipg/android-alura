@@ -1,9 +1,7 @@
 package pissuti.nathalia.aluraviagens.ui.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +9,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
+import pissuti.nathalia.aluraviagens.util.DiasUtil;
+import pissuti.nathalia.aluraviagens.util.MoedaUtil;
 import pissuti.nathalia.aluraviagens.R;
+import pissuti.nathalia.aluraviagens.util.ResourcesUtil;
 import pissuti.nathalia.aluraviagens.model.Pacote;
 
 public class ListaPacotesAdapter extends BaseAdapter {
 
     private final List<Pacote> pacotes;
-    private Context context;
+    private final Context context;
 
     public ListaPacotesAdapter(List<Pacote> pacotes, Context context) {
         this.pacotes = pacotes;
@@ -51,24 +50,37 @@ public class ListaPacotesAdapter extends BaseAdapter {
 
         Pacote pacote = pacotes.get(position);
 
-        TextView local = viewCriada.findViewById(R.id.item_pacote_local);
-        local.setText(pacote.getLocal());
+        mostraLocal(viewCriada, pacote);
+        mostraImagem(viewCriada, pacote);
+        mostraDias(viewCriada, pacote);
+        mostraPreco(viewCriada, pacote);
 
-        // Pegar Imagem
-        Resources resources = context.getResources();
-        int idDoDrawable = resources.getIdentifier(pacote.getImagem(), "drawable", context.getPackageName());
-        Drawable drawableImagemPacote = resources.getDrawable(idDoDrawable);
+        return viewCriada;
+    }
+
+    private void mostraPreco(View viewCriada, Pacote pacote) {
+        TextView preco = viewCriada.findViewById(R.id.item_pacote_preco);
+        String moedaBrasileira = MoedaUtil.formataParaBr(pacote.getPreco());
+        preco.setText(moedaBrasileira);
+    }
+
+    private void mostraDias(View viewCriada, Pacote pacote) {
+        TextView dias = viewCriada.findViewById(R.id.item_pacote_dias);
+        int qtdDias = pacote.getDias();
+        String diasEmTexto = DiasUtil.formataEmTexto(qtdDias);
+        dias.setText( qtdDias + " " + diasEmTexto);
+    }
+
+    private void mostraImagem(View viewCriada, Pacote pacote) {
+        Drawable drawableImagemPacote = ResourcesUtil.getDrawable(context, pacote.getImagem());
 
         ImageView imagem = viewCriada.findViewById(R.id.item_pacote_imagem);
         imagem.setImageDrawable(drawableImagemPacote);
+    }
 
-        TextView dias = viewCriada.findViewById(R.id.item_pacote_dias);
-        dias.setText(pacote.getDias() + " dias");
-
-        TextView preco = viewCriada.findViewById(R.id.item_pacote_preco);
-        preco.setText("R$ " + pacote.getPreco().toString());
-
-        return viewCriada;
+    private void mostraLocal(View viewCriada, Pacote pacote) {
+        TextView local = viewCriada.findViewById(R.id.item_pacote_local);
+        local.setText(pacote.getLocal());
     }
 
 }
