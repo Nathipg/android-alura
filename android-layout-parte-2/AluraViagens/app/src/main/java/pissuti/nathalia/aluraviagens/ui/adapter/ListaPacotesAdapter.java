@@ -68,7 +68,7 @@ public class ListaPacotesAdapter extends BaseAdapter {
         TextView dias = viewCriada.findViewById(R.id.item_pacote_dias);
         int qtdDias = pacote.getDias();
         String diasEmTexto = DiasUtil.formataEmTexto(qtdDias);
-        dias.setText( qtdDias + " " + diasEmTexto);
+        dias.setText( diasEmTexto);
     }
 
     private void mostraImagem(View viewCriada, Pacote pacote) {

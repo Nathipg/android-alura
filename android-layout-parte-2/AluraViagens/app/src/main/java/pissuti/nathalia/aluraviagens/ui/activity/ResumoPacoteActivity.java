@@ -3,14 +3,11 @@ package pissuti.nathalia.aluraviagens.ui.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import pissuti.nathalia.aluraviagens.R;
 import pissuti.nathalia.aluraviagens.model.Pacote;
@@ -30,16 +27,38 @@ public class ResumoPacoteActivity extends AppCompatActivity {
 
         setTitle(TITULO_APPBAR);
 
-        Pacote pacoteSaoPaulo = new Pacote("São Paulo", "sao_paulo_sp", 2, new BigDecimal("243.99"));
+        carregaPacoteRecebido();
+    }
 
-        mostraLocal(pacoteSaoPaulo);
-        mostraImagem(pacoteSaoPaulo);
-        mostraDias(pacoteSaoPaulo);
-        mostraPreco(pacoteSaoPaulo);
-        mostraData(pacoteSaoPaulo);
+    private void carregaPacoteRecebido() {
+        Intent intentRecebida = getIntent();
+        if (intentRecebida.hasExtra(PacoteActivityConstantes.CHAVE_PACOTE)) {
+            Pacote pacote = (Pacote) intentRecebida.getSerializableExtra(PacoteActivityConstantes.CHAVE_PACOTE);
 
+            inicializaCampos(pacote);
+            configuraBotaoPagamento(pacote);
+        }
+    }
+
+    private void configuraBotaoPagamento(Pacote pacote) {
+        Button botaoRealizaPagamento = findViewById(R.id.resumo_pacote_botao_realiza_pagamento);
+        botaoRealizaPagamento.setOnClickListener(view -> {
+            acessaPagamento(pacote);
+        });
+    }
+
+    private void acessaPagamento(Pacote pacote) {
         Intent intent = new Intent(this, PagamentoActivity.class);
+        intent.putExtra(PacoteActivityConstantes.CHAVE_PACOTE, pacote);
         startActivity(intent);
+    }
+
+    private void inicializaCampos(Pacote pacote) {
+        mostraLocal(pacote);
+        mostraImagem(pacote);
+        mostraDias(pacote);
+        mostraPreco(pacote);
+        mostraData(pacote);
     }
 
     private void mostraData(Pacote pacote) {
